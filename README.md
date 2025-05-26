@@ -2,24 +2,35 @@
 
 A simple tool to download and extract data (like compressed CSV files) from URLs. E.g.,
 
-```sh
+```shell
 data-downloader https://some.url.with/a/data/file.ext
 ```
 
-will download `file.ext`, uncompress it with an appropriate algorithm (if necessary) and put the
-results into `./file.ext` on your machine. Alternatively, a custom filename can be specified with
+will download `file.ext`, uncompress it with an appropriate algorithm (if necessary).
 
-```sh
-data-downloader https://some.url.with/a/data/file.ext -o data.ext
-```
+Currently, the supported compression algorithms are:
+- `tar`
 
 ## Installation
 
-Currently, this tool can only be installed with [Go](https://go.dev). If you have Go installed, then
-you can run
+Currently, this tool can only be installed with [Go](https://go.dev). Verify that you have Go installed
+with 
 
-```sh
+```shell
+go version
+```
+
+If you get an error, then you need to install Go from their [website](https://go.dev/dl/). Once you have Go 
+installed, you can install this tool with
+
+```shell
 go install github.com/Chad-Glazier/data-downloader@latest
 ```
 
-in any command line to install the tool.
+in your command line. Verify that the tool was installed with
+
+```shell
+data-downloader version
+```
+
+which should print a number.
