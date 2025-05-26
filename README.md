@@ -10,6 +10,7 @@ will download `file.ext`, uncompress it with an appropriate algorithm (if necess
 
 Currently, the supported compression algorithms are:
 - `tar`
+- `zip`
 
 ## Installation
 
@@ -24,7 +25,7 @@ If you get an error, then you need to install Go from their [website](https://go
 installed, you can install this tool with
 
 ```shell
-go install github.com/Chad-Glazier/data-downloader@latest
+go install github.com/Chad-Glazier/data-downloader
 ```
 
 in your command line. Verify that the tool was installed with

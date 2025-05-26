@@ -12,7 +12,7 @@ import (
 	"github.com/Chad-Glazier/data-downloader/misc"
 )
 
-const VERSION = "development version 0.0.1"
+const VERSION = "development version 0.0.2"
 
 func main() {
 	if os.Args[1] == "version" {

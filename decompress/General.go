@@ -40,6 +40,8 @@ func General(algorithm string, input io.Reader, outputDir string) (int, error) {
 	switch algorithm {
 	case "archive/tar":
 		return UnTar(input, output)
+	case "archive/zip":
+		return UnZip(input, output)
 	default:
 		return 0, errors.New("unrecognized compression algorithm\"" + algorithm + "\"")
 	}

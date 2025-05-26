@@ -26,6 +26,14 @@ func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
 		}
 
 		if header.Typeflag == tar.TypeDir {
+			// If the file is a directory, check if the directory already
+			// exists. If it does not, then create it.
+			_, err := os.Stat(filepath.Join(
+				outputDir.Name(), header.Name,
+			))
+			if !os.IsNotExist(err) {
+				continue
+			}
 			err = os.Mkdir(filepath.Join(outputDir.Name(), header.Name), 0755)
 			if err != nil {
 				return totalBytesWritten, err
@@ -41,7 +49,8 @@ func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
 		for {
 			bytesRead, err := r.Read(buffer)
 			if err != nil && err != io.EOF {
-				return totalBytesWritten, nil
+				w.Close()
+				return totalBytesWritten, err
 			}
 			if bytesRead == 0 {
 				break
@@ -50,6 +59,7 @@ func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
 			bytesWritten, err := w.Write(buffer[:bytesRead])
 			totalBytesWritten += bytesWritten
 			if err != nil {
+				w.Close()
 				return totalBytesWritten, err
 			}
 		}
