@@ -43,6 +43,6 @@ func General(algorithm string, input io.Reader, outputDir string) (int, error) {
 	case "archive/zip":
 		return UnZip(input, output)
 	default:
-		return 0, errors.New("unrecognized compression algorithm\"" + algorithm + "\"")
+		return 0, errors.New("unsupported compression algorithm\"" + algorithm + "\"")
 	}
 }

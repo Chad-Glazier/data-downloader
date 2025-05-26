@@ -22,7 +22,7 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 	// Downloading the `.zip` archive
 	//
 
-	compressed, err := os.CreateTemp(cwd, "data-downloader_*")
+	compressed, err := os.CreateTemp(cwd, "data-downloader_*.zip")
 	if err != nil {
 		return 0, err
 	}
@@ -34,12 +34,12 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 	buffer := make([]byte, DEFAULT_BUFFER_SIZE)
 	for {
 		bytesRead, err := input.Read(buffer)
-		if err == io.EOF || bytesRead == 0 {
+		if err != nil && err != io.EOF {
+			return 0, err
+		}
+		if bytesRead == 0 {
 			break
 		}
-		if err != nil {
-			return 0, err
-		}	
 		compressed.Write(buffer[:bytesRead])
 		compressedSize += bytesRead
 	}

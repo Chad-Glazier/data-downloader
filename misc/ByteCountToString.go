@@ -3,10 +3,10 @@ package misc
 import "strconv"
 
 const (
-	KB float64 = 1e3
-	MB float64 = KB * 1e3
-	GB float64 = MB * 1e3
-	TB float64 = GB * 1e3
+	KB float64 = 1024
+	MB float64 = KB * 1024
+	GB float64 = MB * 1024
+	TB float64 = GB * 1024
 )
 
 // Formats a number of bytes into a string. E.g., 1234567 would become 

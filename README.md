@@ -21,14 +21,17 @@ with
 go version
 ```
 
+(Execute this in your CLI, which should be the command prompt or PowerShell if you're using Windows, or 
+the terminal on Mac or Linux.)
+
 If you get an error, then you need to install Go from their [website](https://go.dev/dl/). Once you have Go 
-installed, you can install this tool with
+installed, you can install this tool by running the following command.
 
 ```shell
 go install github.com/Chad-Glazier/data-downloader
 ```
 
-in your command line. Verify that the tool was installed with
+Verify that the tool was installed with
 
 ```shell
 data-downloader version
