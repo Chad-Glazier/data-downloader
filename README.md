@@ -2,7 +2,7 @@
 
 A simple tool to download and extract files from a URL. E.g.,
 
-```shell
+```sh
 fdd https://some.url.with/a/data/file.ext
 ```
 
@@ -22,7 +22,7 @@ Currently, the supported compression algorithms are:
 Currently, this tool can only be installed with [Go](https://go.dev). Verify
 that you have Go installed with
 
-```shell
+```sh
 go version
 ```
 
@@ -33,13 +33,13 @@ If you get an error, then you need to install Go from their
 [website](https://go.dev/dl/). Once you have Go installed, you can install this
 tool by running the following command.
 
-```shell
+```sh
 go install github.com/Chad-Glazier/fdd
 ```
 
 Verify that the tool was installed with
 
-```shell
+```sh
 fdd version
 ```
 
