@@ -12,8 +12,6 @@ import (
 func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
 	r := tar.NewReader(input)
 
-	buffer := make([]byte, DEFAULT_BUFFER_SIZE)
-
 	totalBytesWritten := 0
 	
 	for {
@@ -46,24 +44,11 @@ func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
 			return totalBytesWritten, err
 		}	
 
-		for {
-			bytesRead, err := r.Read(buffer)
-			if err != nil && err != io.EOF {
-				w.Close()
-				return totalBytesWritten, err
-			}
-			if bytesRead == 0 {
-				break
-			}
-			
-			bytesWritten, err := w.Write(buffer[:bytesRead])
-			totalBytesWritten += bytesWritten
-			if err != nil {
-				w.Close()
-				return totalBytesWritten, err
-			}
-		}
-
+		bytesWritten, err := writeAll(r, w)
 		w.Close()
+		totalBytesWritten += bytesWritten
+		if err != nil {
+			return totalBytesWritten, err
+		}
 	}
 }

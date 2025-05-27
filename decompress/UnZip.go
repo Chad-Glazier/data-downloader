@@ -29,19 +29,9 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 	defer os.Remove(compressed.Name())
 	defer compressed.Close()
 
-	compressedSize := 0
-
-	buffer := make([]byte, DEFAULT_BUFFER_SIZE)
-	for {
-		bytesRead, err := input.Read(buffer)
-		if err != nil && err != io.EOF {
-			return 0, err
-		}
-		if bytesRead == 0 {
-			break
-		}
-		compressed.Write(buffer[:bytesRead])
-		compressedSize += bytesRead
+	compressedSize, err := writeAll(input, compressed)
+	if err != nil {
+		return 0, err
 	}
 
 	//
@@ -88,30 +78,14 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 		if err != nil {
 			return totalBytesWritten, err
 		}
-		buffer := make([]byte, DEFAULT_BUFFER_SIZE)
 
-		for {
-			bytesRead, err := r.Read(buffer)
-			if err != nil && err != io.EOF {
-				w.Close()
-				r.Close()
-				return totalBytesWritten, err
-			}
-			if bytesRead == 0 {
-				break
-			}
-
-			bytesWritten, err := w.Write(buffer[:bytesRead])
-			totalBytesWritten += bytesWritten
-			if err != nil {
-				w.Close()
-				r.Close()
-				return totalBytesWritten, err
-			}
-		}
-
+		bytesWritten, err := writeAll(r, w)
 		w.Close()
 		r.Close()
+		totalBytesWritten += bytesWritten
+		if err != nil {
+			return totalBytesWritten, err
+		}
 	}
 
 	return totalBytesWritten, nil

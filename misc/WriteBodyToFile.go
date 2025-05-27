@@ -1,4 +1,4 @@
-package main
+package misc
 
 import (
 	"io"
@@ -12,7 +12,7 @@ const DEFAULT_BUFFER_SIZE = 1024
 //
 // Returns the number of bytes written, unless there was an error (in which
 // case the number returned is -1).
-func writeBodyToFile(filename string, resp *http.Response) (int, error) {
+func WriteBodyToFile(filename string, resp *http.Response) (int, error) {
 	defer resp.Body.Close()
 
 	f, err := os.Create(filename)

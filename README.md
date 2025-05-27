@@ -11,6 +11,10 @@ will download `file.ext`, uncompress it with an appropriate algorithm (if necess
 Currently, the supported compression algorithms are:
 - `tar`
 - `zip`
+- `bzip2`
+- `flate`
+- `gzip`
+- `zlib`
 
 ## Installation
 

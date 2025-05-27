@@ -12,7 +12,7 @@ import (
 	"github.com/Chad-Glazier/data-downloader/misc"
 )
 
-const VERSION = "development version 0.0.2"
+const VERSION = "development version 0.0.3"
 
 func main() {
 	if os.Args[1] == "version" {
@@ -78,7 +78,7 @@ func main() {
 			fmt.Printf("Downloading file to %s\n", filepath.Join(cwd, args.output))
 		}
 
-		fileSize, err := writeBodyToFile(args.output, resp)
+		fileSize, err := misc.WriteBodyToFile(args.output, resp)
 		if err != nil {
 			fmt.Println("Error downloading file.")
 		} else {
@@ -116,4 +116,3 @@ func main() {
 		misc.ByteCountToString(bytesWritten),
 	)
 }
-
