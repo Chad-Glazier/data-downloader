@@ -7,9 +7,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/Chad-Glazier/data-downloader/decompress"
-	"github.com/Chad-Glazier/data-downloader/filetypes"
-	"github.com/Chad-Glazier/data-downloader/misc"
+	"github.com/Chad-Glazier/fdd/decompress"
+	"github.com/Chad-Glazier/fdd/filetypes"
+	"github.com/Chad-Glazier/fdd/misc"
 )
 
 const VERSION = "development version 0.0.3"
@@ -33,7 +33,7 @@ func main() {
 	}
 	if resp.StatusCode > 299 || resp.StatusCode < 200 {
 		fmt.Printf(
-			"The URL %s sent a bad response: %s\n", 
+			"The URL %s sent a bad response: %s\n",
 			downloadUrl, resp.Status,
 		)
 	}
@@ -60,7 +60,7 @@ func main() {
 	if !ok {
 		// file is uncompressed
 		fmt.Printf("  - file is uncompressed\n")
-		
+
 		cwd, err := os.Getwd()
 		if err != nil {
 			fmt.Printf("Downloading file to %s\n", filename)
@@ -92,8 +92,8 @@ func main() {
 	}
 
 	bytesWritten, err := decompress.General(
-		compressionAlgo, 
-		resp.Body, 
+		compressionAlgo,
+		resp.Body,
 		misc.BaseName(filename),
 	)
 	if err != nil {

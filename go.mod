@@ -1,3 +1,3 @@
-module github.com/Chad-Glazier/data-downloader
+module github.com/Chad-Glazier/fdd
 
 go 1.24.2

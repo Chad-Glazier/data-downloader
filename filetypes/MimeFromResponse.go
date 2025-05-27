@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Chad-Glazier/data-downloader/misc"
+	"github.com/Chad-Glazier/fdd/misc"
 )
 
 // Returns the MIME type from an HTTP response. If a type cannot be determined,
@@ -19,12 +19,12 @@ func MimeFromResponse(resp *http.Response) string {
 	filename, _ := misc.FileNameFromUrl(resp.Request.URL.String())
 	filenameParts := strings.Split(filename, ".")
 	if len(filenameParts) != 1 {
-		extension := "." + filenameParts[len(filenameParts) - 1]
+		extension := "." + filenameParts[len(filenameParts)-1]
 		return ExtToMime[extension]
 	}
 
 	contentTypeHeader := resp.Header.Get("Content-Type")
-	// Some `Content-Type` headers will be in a form like 
+	// Some `Content-Type` headers will be in a form like
 	// "text/html; Encoding=...". However, we only want the "text/html" part.
 	contentTypeHeaderParts := strings.Split(contentTypeHeader, ";")
 	return contentTypeHeaderParts[0]
