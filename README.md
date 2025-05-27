@@ -34,7 +34,7 @@ If you get an error, then you need to install Go from their
 tool by running the following command.
 
 ```sh
-go install github.com/Chad-Glazier/fdd
+go install github.com/Chad-Glazier/fdd@latest
 ```
 
 Verify that the tool was installed with
