@@ -15,51 +15,41 @@ import (
 const VERSION = "development version 0.0.3"
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("this command expects at least one argument.")
+	}
+
 	if os.Args[1] == "version" {
 		fmt.Println(VERSION)
 		return
 	}
 
-	args, err := parseArgs()
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
+	downloadUrl := os.Args[1]
 
-	resp, err := http.Get(args.url)
+	resp, err := http.Get(downloadUrl)
 	if err != nil {
-		fmt.Printf("The URL %s sent an invalid response.\n", args.url)
+		fmt.Printf("The URL %s sent an invalid response.\n", downloadUrl)
 		return
 	}
 	if resp.StatusCode > 299 || resp.StatusCode < 200 {
 		fmt.Printf(
 			"The URL %s sent a bad response: %s\n", 
-			args.url, resp.Status,
+			downloadUrl, resp.Status,
 		)
 	}
 
-	
-	fileType := filetypes.MimeFromName(args.output)
-	inferred := true
-	if (fileType == "") {
-		fileType = filetypes.MimeFromResponse(resp)
-		inferred = false
+	filename, _ := misc.FileNameFromUrl(resp.Request.URL.String())
+	fileType := filetypes.MimeFromResponse(resp)
+	if filename == "" {
+		filename = "data"
 	}
-
-	if args.output == "" {
-		args.output = "data" + filetypes.MimeToExt[fileType]
+	if fileType != "" && !misc.HasExtension(filename) {
+		filename += filetypes.MimeToExt[fileType]
 	}
-
-	fmt.Printf("Found file %s\n", args.output)
-
-	fmt.Printf("  - file type: %s", fileType)
-	if inferred {
-		fmt.Printf(" (inferred from file extension)\n")
-	} else {
-		fmt.Printf(" (according to server response)\n")
-	}
-
 	fileSize := resp.ContentLength
+
+	fmt.Printf("Found file %s\n", filename)
+	fmt.Printf("  - file type: %s\n", fileType)
 	if fileSize == -1 {
 		fmt.Printf("  - file size unknown\n")
 	} else {
@@ -73,12 +63,12 @@ func main() {
 		
 		cwd, err := os.Getwd()
 		if err != nil {
-			fmt.Printf("Downloading file to %s\n", args.output)
+			fmt.Printf("Downloading file to %s\n", filename)
 		} else {
-			fmt.Printf("Downloading file to %s\n", filepath.Join(cwd, args.output))
+			fmt.Printf("Downloading file to %s\n", filepath.Join(cwd, filename))
 		}
 
-		fileSize, err := misc.WriteBodyToFile(args.output, resp)
+		fileSize, err := misc.WriteBodyToFile(filename, resp)
 		if err != nil {
 			fmt.Println("Error downloading file.")
 		} else {
@@ -93,18 +83,18 @@ func main() {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		fmt.Printf("Downloading file to %s\n", misc.BaseName(args.output))
+		fmt.Printf("Downloading file to %s\n", misc.BaseName(filename))
 	} else {
 		fmt.Printf(
 			"Downloading file to %s\n",
-			filepath.Join(cwd, misc.BaseName(args.output)),
+			filepath.Join(cwd, misc.BaseName(filename)),
 		)
 	}
 
 	bytesWritten, err := decompress.General(
 		compressionAlgo, 
 		resp.Body, 
-		misc.BaseName(args.output),
+		misc.BaseName(filename),
 	)
 	if err != nil {
 		fmt.Println(err.Error())

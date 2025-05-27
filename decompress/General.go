@@ -95,7 +95,6 @@ func General(algorithm string, input io.Reader, destination string) (int, error)
 		return 0, errors.New("unsupported compression algorithm\"" + algorithm + "\"")
 	}
 
-
 	switch algorithm {
 	case "tar":
 		return UnTar(input, output)
