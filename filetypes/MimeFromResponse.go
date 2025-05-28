@@ -14,7 +14,10 @@ import (
 // URL's extension. E.g., a request sent to "https://data.com/sample.json" will
 // be presumed to respond with a file of the type "application/json". If such
 // an extension doesn't exist (or is not recognized), then this function defers
-// to the "Content-Type" header of the response.
+// to the "Content-Type" header of the response. I decided to do it this way
+// because some response headers will have a Content-Type like 
+// "application/octet-stream", which tells us nothing about the original file
+// format.
 func MimeFromResponse(resp *http.Response) string {
 	filename, _ := misc.FileNameFromUrl(resp.Request.URL.String())
 	filenameParts := strings.Split(filename, ".")
