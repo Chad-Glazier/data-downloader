@@ -21,7 +21,8 @@ import (
 var decompressCmd = &cobra.Command{
 	Use:   "decompress file",
 	Short: "decompresses a file",
-	Long: `Infers the type of a local file and then decompresses it with an
+	Long: `
+Infers the type of a local file and then decompresses it with an
 appropriate algorithm. The decompressed copy will be written to the
 current working directory. For example,
 

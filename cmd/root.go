@@ -16,7 +16,8 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "fdd",
 	Short: "A utility for downloading and decompressing files",
-	Long: `A command-line tool for downloading and decompressing files from URLs
+	Long: `
+A command-line tool for downloading and decompressing files from URLs
 or from the local machine, inferring types in order to  automatically
 determine an appropriate decompression algorithm. For example:
 

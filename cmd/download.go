@@ -21,7 +21,8 @@ import (
 var downloadCmd = &cobra.Command{
 	Use:   "download url",
 	Short: "download a file from a URL without decompressing it",
-	Long: `Downloads a file from a given URL into the current working directory.
+	Long: `
+Downloads a file from a given URL into the current working directory.
 For example,
 
 	fdd download https://some.domain/file.zip/

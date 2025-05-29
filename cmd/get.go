@@ -26,7 +26,8 @@ import (
 var getCmd = &cobra.Command{
 	Use:   "get url",
 	Short: "download and decompress a file from a URL",
-	Long: `Downloads the file at the given URL and decompresses it if necessary.
+	Long: `
+Downloads the file at the given URL and decompresses it if necessary.
 Uncompressed files will be downloaded like normal. For example,
 
 	fdd get https://google.com/
