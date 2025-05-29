@@ -3,7 +3,7 @@
 A simple tool to download and extract files from a URL. E.g.,
 
 ```sh
-fdd https://some.url.with/a/data/file.ext
+fdd get https://some.url.with/a/data/file.ext
 ```
 
 will download `file.ext` and uncompress it with an appropriate algorithm (if
@@ -16,6 +16,8 @@ Currently, the supported compression algorithms are:
 - `flate`
 - `gzip`
 - `zlib`
+
+Notably, `lzw` is not currently supported.
 
 ## Installation
 
@@ -40,7 +42,7 @@ go install github.com/Chad-Glazier/fdd@latest
 Verify that the tool was installed with
 
 ```sh
-fdd version
+fdd
 ```
 
-which should display the current version.
+which should describe the available commands.
