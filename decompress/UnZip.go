@@ -2,14 +2,17 @@ package decompress
 
 import (
 	"archive/zip"
+	"fmt"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 // Decompresses a file with the `archive/zip` algorithm and writes it to the
 // given directory.
-func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
+func UnZip(input io.Reader, outputDir os.FileInfo, progressBar *progressbar.ProgressBar) (int64, error) {
 	// .zip files require random access, so there's no way to simply pipe data
 	// from the input to the decompression algorithm. Instead, we need to
 	// create a temporary file.
@@ -29,7 +32,9 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 	defer os.Remove(compressed.Name())
 	defer compressed.Close()
 
-	compressedSize, err := writeAll(input, compressed)
+	progressBar.Describe("downloading")
+
+	compressedSize, err := io.Copy(io.MultiWriter(compressed, progressBar), input)
 	if err != nil {
 		return 0, err
 	}
@@ -38,12 +43,23 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 	// Decompressing the `.zip` archive.
 	//
 
+	fmt.Println()
+	var extractionProgress *progressbar.ProgressBar = nil
+	if progressBar != nil {
+		extractionProgress = progressbar.NewOptions(
+			-1,
+			progressbar.OptionSetDescription("extracting"),
+			progressbar.OptionShowBytes(true),
+			progressbar.OptionSetWidth(20),
+		)
+	}
+
 	archive, err := zip.NewReader(compressed, int64(compressedSize))
 	if err != nil {
 		return 0, nil
 	}
 
-	totalBytesWritten := 0
+	var totalBytesWritten int64 = 0
 	for _, file := range archive.File {
 
 		//
@@ -79,7 +95,12 @@ func UnZip(input io.Reader, outputDir os.FileInfo) (int, error) {
 			return totalBytesWritten, err
 		}
 
-		bytesWritten, err := writeAll(r, w)
+		var bytesWritten int64
+		if extractionProgress != nil {
+			bytesWritten, err = io.Copy(io.MultiWriter(w, extractionProgress), r)
+		} else {
+			bytesWritten, err = io.Copy(w, r)
+		}
 		w.Close()
 		r.Close()
 		totalBytesWritten += bytesWritten

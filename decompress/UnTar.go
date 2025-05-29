@@ -5,15 +5,17 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 // Decompresses a file with the `archive/tar` algorithm and writes it to the
 // given directory.
-func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
+func UnTar(input io.Reader, outputDir os.FileInfo, progressBar *progressbar.ProgressBar) (int64, error) {
 	r := tar.NewReader(input)
 
-	totalBytesWritten := 0
-	
+	var totalBytesWritten int64 = 0
+
 	for {
 		header, err := r.Next()
 		if err == io.EOF {
@@ -42,9 +44,9 @@ func UnTar(input io.Reader, outputDir os.FileInfo) (int, error) {
 		w, err := os.Create(filepath.Join(outputDir.Name(), header.Name))
 		if err != nil {
 			return totalBytesWritten, err
-		}	
+		}
 
-		bytesWritten, err := writeAll(r, w)
+		bytesWritten, err := io.Copy(io.MultiWriter(w, progressBar), r)
 		w.Close()
 		totalBytesWritten += bytesWritten
 		if err != nil {

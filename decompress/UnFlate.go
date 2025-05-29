@@ -1,16 +1,18 @@
 package decompress
 
 import (
+	"compress/flate"
 	"io"
 	"os"
-	"compress/flate"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 // Decompresses a file with the `compress/flate` algorithm.
 //
 // Yes, I know "inflate" would be better. But all of the other functions start
 // with "un".
-func UnFlate(input io.Reader, outputFile os.FileInfo) (int, error) {
+func UnFlate(input io.Reader, outputFile os.FileInfo, progressBar *progressbar.ProgressBar) (int64, error) {
 	r := flate.NewReader(input)
 	defer r.Close()
 
@@ -20,5 +22,5 @@ func UnFlate(input io.Reader, outputFile os.FileInfo) (int, error) {
 	}
 	defer w.Close()
 
-	return writeAll(r, w)
+	return io.Copy(io.MultiWriter(w, progressBar), r)
 }

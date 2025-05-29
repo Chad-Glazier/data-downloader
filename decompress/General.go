@@ -7,11 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-)
 
-// In this package, files need to be read, processed, and then written. The
-// buffer size determines how many bytes are processed at a time.
-const DEFAULT_BUFFER_SIZE = 1024
+	"github.com/schollz/progressbar/v3"
+)
 
 // Decompresses data read from `input` and writes the results to `output` using
 // the algorithm specified. The algorithm should be specified as a string that
@@ -26,15 +24,18 @@ const DEFAULT_BUFFER_SIZE = 1024
 //
 // (Note that "compress/lzw" is omitted from the list.)
 //
-// `destination` is created in the current working directory. If the file 
+// `destination` is created in the current working directory. If the file
 // already exists, it will be used. However, if you're decompressing an archive
 // the existing file must be a directory. Conversely, if you're decompressing
 // with a single-file algorithm (the "compress/*" algorithms), then the existing
 // destination must be a non-directory. In the case of single-file decompression,
 // the existing file is overwritten. In the case of an archive, the existing
 // directory will not be cleared.
-// 
-func General(algorithm string, input io.Reader, destination string) (int, error) {
+//
+// The `progressBar` argument is the progress bar that will be used to display
+// the progress (duh). If you don't want a progress bar, just pass `nil`.
+//
+func General(algorithm string, input io.Reader, destination string, progressBar *progressbar.ProgressBar) (int64, error) {
 	algorithmParts := strings.Split(algorithm, "/")
 	classification := algorithmParts[0]
 	algorithm = algorithmParts[len(algorithmParts) - 1]
@@ -97,17 +98,17 @@ func General(algorithm string, input io.Reader, destination string) (int, error)
 
 	switch algorithm {
 	case "tar":
-		return UnTar(input, output)
+		return UnTar(input, output, progressBar)
 	case "zip":
-		return UnZip(input, output)
+		return UnZip(input, output, progressBar)
 	case "bzip2":
-		return UnBzip2(input, output)
+		return UnBzip2(input, output, progressBar)
 	case "flate":
-		return UnFlate(input, output)
+		return UnFlate(input, output, progressBar)
 	case "gzip":
-		return UnGzip(input, output)
+		return UnGzip(input, output, progressBar)
 	case "zlib":
-		return UnZlib(input, output)
+		return UnZlib(input, output, progressBar)
 	default:
 		return 0, errors.New("unsupported compression algorithm\"" + algorithm + "\"")
 	}

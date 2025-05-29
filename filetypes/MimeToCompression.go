@@ -19,5 +19,4 @@ var MimeToCompression = map[string]string{
 	"application/zip": "archive/zip",
 	"application/x-zip-compressed": "archive/zip",
 	"application/zip-compressed": "archive/zip",
-	"": "undefined",
 }

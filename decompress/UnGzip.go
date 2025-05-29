@@ -1,13 +1,15 @@
 package decompress
 
 import (
+	"compress/gzip"
 	"io"
 	"os"
-	"compress/gzip"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 // Decompresses an input stream with the `compress/gzip` algorithm.
-func UnGzip(input io.Reader, outputFile os.FileInfo) (int, error) {
+func UnGzip(input io.Reader, outputFile os.FileInfo, progressBar *progressbar.ProgressBar) (int64, error) {
 	r, err := gzip.NewReader(input)
 	if err != nil {
 		return 0, err
@@ -20,5 +22,5 @@ func UnGzip(input io.Reader, outputFile os.FileInfo) (int, error) {
 	}
 	defer w.Close()
 
-	return writeAll(r, w)
+	return io.Copy(io.MultiWriter(w, progressBar), r)
 }

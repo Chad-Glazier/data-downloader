@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 
 	"github.com/Chad-Glazier/fdd/filetypes"
+	"github.com/schollz/progressbar/v3"
 )
 
 // Decompresses a file, writing it to the named destination. If the the
@@ -24,7 +25,7 @@ import (
 // Note that in order to decompress a single file (e.g., using the Gzip
 // algorithm), the destination must be a file. In order to decompress an
 // archive (e.g., a .tar or .zip file), the destination must be a directory.
-func File(source string, destination string) (int, error) {
+func File(source string, destination string, progressBar *progressbar.ProgressBar) (int64, error) {
 	inputFile, err := os.Open(source)
 	if err != nil {
 		return 0, nil
@@ -40,7 +41,7 @@ func File(source string, destination string) (int, error) {
 		fileType := filetypes.ExtToMime[ext]
 		algorithm := filetypes.MimeToCompression[fileType]
 		if algorithm != "" {
-			return General(algorithm, inputFile, destination)
+			return General(algorithm, inputFile, destination, progressBar)
 		}
 	}
 
@@ -56,7 +57,7 @@ func File(source string, destination string) (int, error) {
 	algorithm, _ := filetypes.CompressionFromMagicNum(headerReader)
 	headerReader.Close()
 	if algorithm != "" {
-		return General(algorithm, inputFile, destination)
+		return General(algorithm, inputFile, destination, progressBar)
 	}
 
 	//
