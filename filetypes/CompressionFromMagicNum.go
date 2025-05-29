@@ -10,12 +10,8 @@ type MagicNum struct {
 	Signature []byte
 }
 
-// Maps the magic number of a file (assumed to be its first 8 bytes) to a
-// compression algorithm. File types that aren't compressed, or aren't
-// recognized as such, are not included.
-// 
-// Note that tar archives have magic numbers starting at an offset of 257
-// bytes.
+// Maps the magic number of a file to a compression algorithm. File types that 
+// aren't compressed, or aren't recognized as such, are not included.
 var compressedMagicNums = []MagicNum{
 	{ 257, "archive/tar", []byte{ 0x75, 0x73, 0x74, 0x61, 0x72, 0x00, 0x30, 0x30 } },
 	{ 257, "archive/tar", []byte{ 0x75, 0x73, 0x74, 0x61, 0x72, 0x20, 0x20, 0x00 } },
