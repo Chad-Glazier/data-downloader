@@ -21,7 +21,7 @@ Notably, `lzw` is not currently supported.
 
 ## Installation
 
-This tool can be installed by downloading one of the releases from [here](https://github.com/Chad-Glazier/fdd/releases/),
+This tool can be installed by downloading one of the releases from [here](https://github.com/Chad-Glazier/fdd/releases/latest),
 or by using `go install`:
 
 ```sh
