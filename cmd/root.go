@@ -23,8 +23,7 @@ determine an appropriate decompression algorithm. For example:
 	fdd get https://google.com/
 
 This will determine that the server's response is an HTML file, and
-will download it with a default name.
-`,
+will download it with a default name.`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

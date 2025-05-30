@@ -45,8 +45,7 @@ properties:
   1) The file's extension. E.g., a URL whose path ends with ".zip"
      is assumed to yield a zip archive.
   2) The "Content-Type" header of the response. This property is only
-     used when the file doesn't have an extension.
-`,
+     used when the file doesn't have an extension.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		rawUrl := args[0]
 

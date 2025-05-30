@@ -26,8 +26,7 @@ For example,
 
 	fdd download https://some.domain/file.zip/
 
-will download the response to ./file.zip, leaving it compressed.
-`,
+will download the response to ./file.zip, leaving it compressed.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		rawUrl := args[0]

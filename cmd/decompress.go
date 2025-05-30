@@ -36,8 +36,7 @@ inferred from the following properties:
   2) In lieu of a file extension, this command will look at the 
      file's "magic number"; i.e., the first few bytes of the file.
      Most common compression methods will leave a signature so that
-     the type can be recognized.
-`,
+     the type can be recognized.`,
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		srcPath := args[0]
