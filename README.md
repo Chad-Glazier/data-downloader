@@ -21,19 +21,8 @@ Notably, `lzw` is not currently supported.
 
 ## Installation
 
-Currently, this tool can only be installed with [Go](https://go.dev). Verify
-that you have Go installed with
-
-```sh
-go version
-```
-
-(Execute this in your CLI, which should be the command prompt or PowerShell if
-you're using Windows, or the terminal on Mac or Linux.)
-
-If you get an error, then you need to install Go from their
-[website](https://go.dev/dl/). Once you have Go installed, you can install this
-tool by running the following command.
+This tool can be installed by downloading one of the releases from [here](https://github.com/Chad-Glazier/fdd/releases/),
+or by using `go install`:
 
 ```sh
 go install github.com/Chad-Glazier/fdd@latest
