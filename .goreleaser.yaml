@@ -22,7 +22,6 @@ builds:
       - linux
       - windows
       - darwin
-      - mac
 
 archives:
   - formats: [tar.gz]
